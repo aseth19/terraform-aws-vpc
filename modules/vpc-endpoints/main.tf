@@ -32,7 +32,10 @@ resource "aws_vpc_endpoint" "this" {
   policy              = lookup(each.value, "policy", null)
   private_dns_enabled = lookup(each.value, "service_type", "Interface") == "Interface" ? lookup(each.value, "private_dns_enabled", null) : null
 
-  tags = merge(var.tags, lookup(each.value, "tags", {}))
+  tags = merge(var.tags, lookup(each.value, "tags", {}), {
+    Env       = "prod"
+    yor_trace = "c8c58652-90dd-42e3-9e75-0fe286a74deb"
+  })
 
   timeouts {
     create = lookup(var.timeouts, "create", "10m")
